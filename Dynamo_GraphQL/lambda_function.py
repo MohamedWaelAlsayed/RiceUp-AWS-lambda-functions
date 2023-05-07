@@ -22,7 +22,7 @@ def lambda_handler(event: dict, context):
     # }
 
     device_id = event["device_id"]
-    timestamp = int(time.time())
+    timestamp = int(event.get("timestamp", time.time()))
     temperature = event.get("temperature", "null")
     moisture = event.get("moisture", "null")
 
