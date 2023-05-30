@@ -1,3 +1,4 @@
+# Made by Mohamed Wael Alsayed
 import json
 import logging
 import boto3
@@ -21,13 +22,11 @@ def lambda_handler(event: dict, context):
     my_items = {
         'device_id': {'S': str(device_id)},
         'timestamp': {'N':  str(int(time.time()*1000))},
-      "__typename": {
-                'S' : str("Reading")
-            }
-            
+        "__typename": {
+            'S': str("Reading")
         }
 
-    
+    }
 
     for kind, value in event.items():
         if kind != 'device_id':
