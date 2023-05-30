@@ -10,7 +10,7 @@ logger.setLevel(logging.INFO)
 session = requests.Session()
 
 APPSYNC_API_ENDPOINT_URL = "https://ccid7g6a45huhhkx52rtmvrbm4.appsync-api.us-east-1.amazonaws.com/graphql"
-API_KEY = ""
+API_KEY = "da2-azkuqy5zjjdmzazvvzxbfiv4xe"
 
 
 def lambda_handler(event: dict, context):
@@ -22,9 +22,26 @@ def lambda_handler(event: dict, context):
     # }
 
     device_id = event["device_id"]
-    timestamp = int(event.get("timestamp", time.time()))
+    if event.keys().__contains__("timestamp"):
+        if event["timestamp"] == 0:
+            event["timestamp"] = int(time.time())
+            timestamp = event["timestamp"]
+        else:
+            timestamp = event["timestamp"]
+
+    else:
+        event["timestamp"] = int(time.time())
+        timestamp = event["timestamp"]
+
+    # timestamp = int(event.get("timestamp", time.time()))
     temperature = event.get("temperature", "null")
+    if temperature < 0 or temperature == 0:
+        return "Error in temperature. " + str(temperature)
+
     moisture = event.get("moisture", "null")
+
+    if moisture < 0 or moisture == 0 or moisture == 100:
+        return "Error in moisture. " + str(moisture)
 
     # logger.info('Event: ' + json.dumps(response.json()['data']))
 
